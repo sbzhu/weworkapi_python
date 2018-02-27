@@ -17,6 +17,8 @@ sys.path.append("../src/")
 from ServiceCorpApi import *
 from TestConf import * 
 
+
+## 第三方服务商接口的使用方法
 api = ServiceCorpApi(
         "SUITE_ID", 
         "SUITE_SECRET",

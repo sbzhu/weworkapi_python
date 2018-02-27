@@ -47,7 +47,7 @@ CORP_API_TYPE = {
         'AGENT_SET' 	   : ['/cgi-bin/agent/set?access_token=ACCESS_TOKEN', 'POST'],
         'AGENT_GET_LIST'   : ['/cgi-bin/agent/list?access_token=ACCESS_TOKEN', 'GET'],
 
-        'MENU_CREATE' : ['/cgi-bin/menu/create?access_token=ACCESS_TOKEN', 'POST'],
+        'MENU_CREATE' : ['/cgi-bin/menu/create?access_token=ACCESS_TOKEN', 'POST'], ## TODO
         'MENU_GET' 	   : ['/cgi-bin/menu/get?access_token=ACCESS_TOKEN', 'GET'],
         'MENU_DELETE' 	   : ['/cgi-bin/menu/delete?access_token=ACCESS_TOKEN', 'GET'],
 
