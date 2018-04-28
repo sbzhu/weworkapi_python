@@ -1,7 +1,8 @@
 
 # About
 weworkapi_python 是为了简化开发者对企业微信API接口的使用而设计的，API调用库系列之python版本      
-本库仅做示范用，并不保证完全无bug；另外，作者会不定期更新本库，但不保证与官方API接口文档同步，因此一切以[官方文档](https://work.weixin.qq.com/api/doc)为准。
+本库仅做示范用，并不保证完全无bug；  
+作者会不定期更新本库，但不保证与官方API接口文档同步，因此一切以[官方文档](https://work.weixin.qq.com/api/doc)为准。
 
 # Director 
 
@@ -21,7 +22,7 @@ token是需要缓存的，不能每次调用都去获取token（否者会中频�
 在本库的设计里，token是以类里的一个变量缓存的  
 比如api/src/CorpApi.py 里的access_token变量  
 在类的生命周期里，这个accessToken都是存在的， 当且仅当发现token过期，CorpAPI类会自动刷新token   
-刷新机制在 api/src/AbstractApi.py
+刷新机制在 api/src/AbstractApi.py  
 所以，使用时，只需要全局实例化一个CorpAPI类，不要析构它，就可一直用它调函数，不用关心 token  
 ```
 api = CorpAPI(corpid, corpsecret);
