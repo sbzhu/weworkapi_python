@@ -52,6 +52,7 @@ CORP_API_TYPE = {
         'MENU_DELETE' 	   : ['/cgi-bin/menu/delete?access_token=ACCESS_TOKEN', 'GET'],
 
         'MESSAGE_SEND' 	   : ['/cgi-bin/message/send?access_token=ACCESS_TOKEN', 'POST'],
+        'MESSAGE_REVOKE'   : ['/cgi-bin/message/revoke?access_token=ACCESS_TOKEN', 'POST'],
 
         'MEDIA_GET' 	   : ['/cgi-bin/media/get?access_token=ACCESS_TOKEN', 'GET'],
 
@@ -71,7 +72,14 @@ CORP_API_TYPE = {
         'BATCH_UPDATE_INVOICE_STATUS' : 
             ['/cgi-bin/card/invoice/reimburse/updatestatusbatch?access_token=ACCESS_TOKEN', 'POST'],
         'BATCH_GET_INVOICE_INFO' : 
-            ['/cgi-bin/card/invoice/reimburse/getinvoiceinfobatch?access_token=ACCESS_TOKEN', 'POST'],
+            ['/cgi-bin/card/invoice/reimburse/getinvoiceinfobatch?access_token=ACCESS_TOKEN', 'POST'], 
+
+        'APP_CHAT_CREATE'  : ['/cgi-bin/appchat/create?access_token=ACCESS_TOKEN', 'POST'],
+        'APP_CHAT_GET'     : ['/cgi-bin/appchat/get?access_token=ACCESS_TOKEN', 'GET'],
+        'APP_CHAT_UPDATE'  : ['/cgi-bin/appchat/update?access_token=ACCESS_TOKEN', 'POST'],
+        'APP_CHAT_SEND'    : ['/cgi-bin/appchat/send?access_token=ACCESS_TOKEN', 'POST'],
+
+        'MINIPROGRAM_CODE_TO_SESSION_KEY' : ['/cgi-bin/miniprogram/jscode2session?access_token=ACCESS_TOKEN', 'GET'],
 }
 
 class CorpApi(AbstractApi) :
