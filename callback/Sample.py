@@ -30,8 +30,8 @@ if __name__ == "__main__":
    '''
    wxcpt=WXBizMsgCrypt(sToken,sEncodingAESKey,sCorpID)
    #sVerifyMsgSig=HttpUtils.ParseUrl("msg_signature")
-   ret = wxcpt.VerifyAESKey()
-   print ret
+   #ret = wxcpt.VerifyAESKey()
+   #print ret
    sVerifyMsgSig="012bc692d0a58dd4b10f8dfe5c4ac00ae211ebeb"
    #sVerifyTimeStamp=HttpUtils.ParseUrl("timestamp")
    sVerifyTimeStamp="1476416373"
