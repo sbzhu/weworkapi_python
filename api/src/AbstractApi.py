@@ -64,7 +64,7 @@ class AbstractApi(object) :
             # check if token expired
             if self.__tokenExpired(response.get('errcode')) :
                 self.__refreshToken(shortUrl)
-                ++ retryCnt
+                retryCnt += 1
                 continue
             else :
                 break
@@ -107,7 +107,7 @@ class AbstractApi(object) :
         if DEBUG is True : 
             print realUrl, args 
 
-        return requests.post(realUrl, data=json.dumps(args).decode('unicode-escape').encode("utf-8")).json()
+        return requests.post(realUrl, data = json.dumps(args, ensure_ascii = False).encode('utf-8')).json()
 
     def __httpGet(self, url) :
         realUrl = self.__appendToken(url)
