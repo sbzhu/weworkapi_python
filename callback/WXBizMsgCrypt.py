@@ -74,8 +74,7 @@ class XMLParse:
         try:
             xml_tree = ET.fromstring(xmltext)
             encrypt  = xml_tree.find("Encrypt")
-            touser_name    = xml_tree.find("ToUserName")
-            return  ierror.WXBizMsgCrypt_OK, encrypt.text, touser_name.text
+            return  ierror.WXBizMsgCrypt_OK, encrypt.text
         except Exception,e:
             print e
             return  ierror.WXBizMsgCrypt_ParseXml_Error,None,None
@@ -138,13 +137,13 @@ class Prpcrypt(object):
         self.mode = AES.MODE_CBC
     
             
-    def encrypt(self,text,corpid):
+    def encrypt(self,text,receiveid):
         """对明文进行加密
         @param text: 需要加密的明文
         @return: 加密得到的字符串
         """      
         # 16位随机字符串添加到明文开头
-        text = self.get_random_str() + struct.pack("I",socket.htonl(len(text))) + text + corpid
+        text = self.get_random_str() + struct.pack("I",socket.htonl(len(text))) + text + receiveid
         # 使用自定义的填充方式对明文进行补位填充
         pkcs7 = PKCS7Encoder()
         text = pkcs7.encode(text)
@@ -158,7 +157,7 @@ class Prpcrypt(object):
             print e 
             return  ierror.WXBizMsgCrypt_EncryptAES_Error,None
     
-    def decrypt(self,text,corpid):
+    def decrypt(self,text,receiveid):
         """对解密后的明文进行补位删除
         @param text: 密文 
         @return: 删除填充补位后的明文
@@ -179,11 +178,11 @@ class Prpcrypt(object):
             content = plain_text[16:-pad]
             xml_len = socket.ntohl(struct.unpack("I",content[ : 4])[0])
             xml_content = content[4 : xml_len+4] 
-            from_corpid = content[xml_len+4:]
+            from_receiveid = content[xml_len+4:]
         except Exception,e:
             print e
             return  ierror.WXBizMsgCrypt_IllegalBuffer,None
-        if  from_corpid != corpid:
+        if  from_receiveid != receiveid:
             return ierror.WXBizMsgCrypt_ValidateCorpid_Error,None
         return 0,xml_content
     
@@ -197,10 +196,7 @@ class Prpcrypt(object):
         
 class WXBizMsgCrypt(object):
     #构造函数
-    #@param sToken: 企业微信后台，开发者设置的Token
-    # @param sEncodingAESKey: 企业微信后台，开发者设置的EncodingAESKey
-    # @param sCorpId: 企业号的CorpId
-    def __init__(self,sToken,sEncodingAESKey,sCorpId):
+    def __init__(self,sToken,sEncodingAESKey,sReceiveId):
         try:
             self.key = base64.b64decode(sEncodingAESKey+"=")  
             assert len(self.key) == 32
@@ -208,7 +204,7 @@ class WXBizMsgCrypt(object):
             throw_exception("[error]: EncodingAESKey unvalid !", FormatException) 
             # return ierror.WXBizMsgCrypt_IllegalAesKey,None
         self.m_sToken = sToken
-        self.m_sCorpid = sCorpId
+        self.m_sReceiveId = sReceiveId
 
 		 #验证URL
          #@param sMsgSignature: 签名串，对应URL参数的msg_signature
@@ -226,7 +222,7 @@ class WXBizMsgCrypt(object):
         if not signature == sMsgSignature:
             return ierror.WXBizMsgCrypt_ValidateSignature_Error, None
         pc = Prpcrypt(self.key)
-        ret,sReplyEchoStr = pc.decrypt(sEchoStr,self.m_sCorpid)
+        ret,sReplyEchoStr = pc.decrypt(sEchoStr,self.m_sReceiveId)
         return ret,sReplyEchoStr
 	
     def EncryptMsg(self, sReplyMsg, sNonce, timestamp = None):
@@ -237,7 +233,7 @@ class WXBizMsgCrypt(object):
         #sEncryptMsg: 加密后的可以直接回复用户的密文，包括msg_signature, timestamp, nonce, encrypt的xml格式的字符串,
         #return：成功0，sEncryptMsg,失败返回对应的错误码None     
         pc = Prpcrypt(self.key) 
-        ret,encrypt = pc.encrypt(sReplyMsg, self.m_sCorpid)
+        ret,encrypt = pc.encrypt(sReplyMsg, self.m_sReceiveId)
         if ret != 0:
             return ret,None
         if timestamp is None:
@@ -260,7 +256,7 @@ class WXBizMsgCrypt(object):
         # @return: 成功0，失败返回对应的错误码
          # 验证安全签名 
         xmlParse = XMLParse()
-        ret,encrypt,touser_name = xmlParse.extract(sPostData)
+        ret,encrypt = xmlParse.extract(sPostData)
         if ret != 0:
             return ret, None
         sha1 = SHA1() 
@@ -270,7 +266,7 @@ class WXBizMsgCrypt(object):
         if not signature == sMsgSignature:
             return ierror.WXBizMsgCrypt_ValidateSignature_Error, None
         pc = Prpcrypt(self.key)
-        ret,xml_content = pc.decrypt(encrypt,self.m_sCorpid)
+        ret,xml_content = pc.decrypt(encrypt,self.m_sReceiveId)
         return ret,xml_content 
 
 
