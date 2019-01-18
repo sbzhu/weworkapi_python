@@ -8,6 +8,7 @@ weworkapi_python 是为了简化开发者对企业微信API接口的使用而设
 python : https://github.com/sbzhu/weworkapi_python  abelzhu@tencent.com(企业微信团队)  
 ruby ： https://github.com/mycolorway/wework  MyColorway(个人开发者)  
 php : https://github.com/sbzhu/weworkapi_php  abelzhu@tencent.com(企业微信团队)  
+golang : https://github.com/sbzhu/weworkapi_golang  ryanjelin@tencent.com(企业微信团队)   
 golang : https://github.com/doubliekill/EnterpriseWechatSDK  1006401052yh@gmail.com(个人开发者)  
 
 # Director 
