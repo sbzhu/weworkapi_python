@@ -17,7 +17,9 @@ from Crypto.Cipher import AES
 import xml.etree.cElementTree as ET  
 import sys                                                                                                                                                                             
 import socket
+stdi,stdo,stde=sys.stdin,sys.stdout,sys.stderr 
 reload(sys)
+sys.stdin,sys.stdout,sys.stderr=stdi,stdo,stde
 import ierror 
 sys.setdefaultencoding('utf-8') 
 
