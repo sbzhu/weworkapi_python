@@ -81,7 +81,7 @@ class XMLParse:
         except Exception as e:
             logger = logging.getLogger()
             logger.error(e)
-            return ierror.WXBizMsgCrypt_ParseXml_Error, None, None
+            return ierror.WXBizMsgCrypt_ParseXml_Error, None
 
     def generate(self, encrypt, signature, timestamp, nonce):
         """生成xml消息
