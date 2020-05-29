@@ -79,7 +79,7 @@ class XMLParse:
             return  ierror.WXBizMsgCrypt_OK, encrypt.text
         except Exception,e:
             print e
-            return  ierror.WXBizMsgCrypt_ParseXml_Error,None,None
+            return  ierror.WXBizMsgCrypt_ParseXml_Error,None
     
     def generate(self, encrypt, signature, timestamp, nonce):
         """生成xml消息
