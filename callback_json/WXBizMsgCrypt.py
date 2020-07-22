@@ -61,20 +61,21 @@ class JsonParse:
      
     # json消息模板   
     AES_TEXT_RESPONSE_TEMPLATE = '''{
-"Encrypt": "%(msg_encrypt)s",
-"MsgSignature": "%(msg_signaturet)s",
-"TimeStamp": %(timestamp)s,
-"Nonce": "%(nonce)s"
-}'''
+        "encrypt": "%(msg_encrypt)s",
+        "msgsignature": "%(msg_signaturet)s",
+        "timestamp": %(timestamp)s,
+        "nonce": "%(nonce)s"
+    }'''
 
     def extract(self, jsontext):
         """提取出json数据包中的加密消息 
         @param jsontext: 待提取的json字符串
         @return: 提取出的加密消息字符串
         """
+        print jsontext
         try:
             json_dict = json.loads(jsontext)
-            return  ierror.WXBizMsgCrypt_OK, json_dict['Encrypt']
+            return  ierror.WXBizMsgCrypt_OK, json_dict['encrypt']
         except Exception,e: 
             print e
             return ierror.WXBizMsgCrypt_ParseXml_Error, None
@@ -87,11 +88,11 @@ class JsonParse:
         @return: 生成的json字符串
         """
         resp_dict = {
-                    'msg_encrypt' : encrypt,
-                    'msg_signaturet': signature,
-                    'timestamp'    : timestamp,
-                    'nonce'        : nonce,
-                     }
+                'msg_encrypt' : encrypt,
+                'msg_signaturet': signature,
+                'timestamp'    : timestamp,
+                'nonce'        : nonce,
+        }
         resp_json = self.AES_TEXT_RESPONSE_TEMPLATE % resp_dict
         return resp_json   
     
@@ -207,13 +208,13 @@ class WXBizMsgCrypt(object):
         self.m_sToken = sToken
         self.m_sReceiveId = sReceiveId
 
-		 #验证URL
+                 #验证URL
          #@param sMsgSignature: 签名串，对应URL参数的msg_signature
          #@param sTimeStamp: 时间戳，对应URL参数的timestamp
          #@param sNonce: 随机串，对应URL参数的nonce
          #@param sEchoStr: 随机串，对应URL参数的echostr
          #@param sReplyEchoStr: 解密之后的echostr，当return返回0时有效
-         #@return：成功0，失败返回对应的错误码	
+         #@return：成功0，失败返回对应的错误码
 
     def VerifyURL(self, sMsgSignature, sTimeStamp, sNonce, sEchoStr):
         sha1 = SHA1()
@@ -225,7 +226,7 @@ class WXBizMsgCrypt(object):
         pc = Prpcrypt(self.key)
         ret,sReplyEchoStr = pc.decrypt(sEchoStr,self.m_sReceiveId)
         return ret,sReplyEchoStr
-	
+
     def EncryptMsg(self, sReplyMsg, sNonce, timestamp = None):
         #将企业回复用户的消息加密打包
         #@param sReplyMsg: 企业号待回复用户的消息，json格式的字符串
@@ -271,5 +272,3 @@ class WXBizMsgCrypt(object):
         pc = Prpcrypt(self.key)
         ret,json_content = pc.decrypt(encrypt,self.m_sReceiveId)
         return ret,json_content 
-
-
