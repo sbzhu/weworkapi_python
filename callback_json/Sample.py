@@ -4,9 +4,9 @@
 # Author: jonyqin
 # Created Time: Thu 11 Sep 2014 03:55:41 PM CST
 # File Name: Sample.py
-# Description: WXBizMsgCrypt 使用demo文件
+# Description: WXBizJsonMsgCrypt 使用demo文件
 #########################################################################
-from WXBizMsgCrypt import WXBizMsgCrypt
+from WXBizJsonMsgCrypt import WXBizJsonMsgCrypt
 import sys
 
 if __name__ == "__main__":   
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 	3. 解密出echostr原文，将原文当作Get请求的response，返回给企业微信
 	第2，3步可以用企业微信提供的库函数VerifyURL来实现。
    '''
-   wxcpt=WXBizMsgCrypt(sToken,sEncodingAESKey,sCorpID)
+   wxcpt=WXBizJsonMsgCrypt(sToken,sEncodingAESKey,sCorpID)
    sVerifyMsgSig="012bc692d0a58dd4b10f8dfe5c4ac00ae211ebeb"
    sVerifyTimeStamp="1476416373"
    sVerifyNonce="47744683"
@@ -49,13 +49,13 @@ if __name__ == "__main__":
    Host: qy.weixin.qq.com
 
    { 
-    "ToUserName": "wx5823bf96d3bd56c7", 
-    "Encrypt": "cjhLUX7UU4yCSelv1vz7T0zT8huF51bAMVWriNvO1FMegHrQZNrtvRxbwf0fUPsFvwqR0U0fgiJNEA5Y30F2MoI2S7vv3EjVQ68C0cjw9frBoUE2Hj0BvFp9h3u6Vbsg4lc1C8AtHdaN8orKuNKkLRLuYEL52R1J3v8olJGZRLnRdVKIivixmX/eQpzgeExtp20jI1HxRP1AAZ6xZoILdqDPO549LO4WeG+685JRUTdiwcY5fjZlqeMxuT4PpMn1X9OWsS7NRj06Wa5E3Tvg4twjWp39KPfOdRte6P1T4JU=", 
-    "AgentID": 218 
+    "tousername": "wx5823bf96d3bd56c7", 
+    "encrypt": "cjhLUX7UU4yCSelv1vz7T0zT8huF51bAMVWriNvO1FMegHrQZNrtvRxbwf0fUPsFvwqR0U0fgiJNEA5Y30F2MoI2S7vv3EjVQ68C0cjw9frBoUE2Hj0BvFp9h3u6Vbsg4lc1C8AtHdaN8orKuNKkLRLuYEL52R1J3v8olJGZRLnRdVKIivixmX/eQpzgeExtp20jI1HxRP1AAZ6xZoILdqDPO549LO4WeG+685JRUTdiwcY5fjZlqeMxuT4PpMn1X9OWsS7NRj06Wa5E3Tvg4twjWp39KPfOdRte6P1T4JU=", 
+    "agentid": 218 
    }
 
    企业收到post请求之后应该 1.解析出url上的参数，包括消息体签名(msg_signature)，时间戳(timestamp)以及随机数字串(nonce)
-   2.验证消息体签名的正确性。 3.将post请求的数据进行json解析，并将<Encrypt>标签的内容进行解密，解密出来的明文即是用户回复消息的明文，明文格式请参考官方文档
+   2.验证消息体签名的正确性。 3.将post请求的数据进行json解析，并将"encrypt"标签的内容进行解密，解密出来的明文即是用户回复消息的明文，明文格式请参考官方文档
    第2，3步可以用企业微信提供的库函数DecryptMsg来实现。
    '''
 
@@ -63,7 +63,7 @@ if __name__ == "__main__":
    sReqTimeStamp = "1409659813"
 
    sReqMsgSig = "e3647471e395139e2308c1fa963f2d648a00b90e"
-   sReqData = '{ "ToUserName": "wx5823bf96d3bd56c7", "Encrypt": "cjhLUX7UU4yCSelv1vz7T0zT8huF51bAMVWriNvO1FMegHrQZNrtvRxbwf0fUPsFvwqR0U0fgiJNEA5Y30F2MoI2S7vv3EjVQ68C0cjw9frBoUE2Hj0BvFp9h3u6Vbsg4lc1C8AtHdaN8orKuNKkLRLuYEL52R1J3v8olJGZRLnRdVKIivixmX/eQpzgeExtp20jI1HxRP1AAZ6xZoILdqDPO549LO4WeG+685JRUTdiwcY5fjZlqeMxuT4PpMn1X9OWsS7NRj06Wa5E3Tvg4twjWp39KPfOdRte6P1T4JU=", "AgentID": 218 }';
+   sReqData = '{ "tousername": "wx5823bf96d3bd56c7", "encrypt": "cjhLUX7UU4yCSelv1vz7T0zT8huF51bAMVWriNvO1FMegHrQZNrtvRxbwf0fUPsFvwqR0U0fgiJNEA5Y30F2MoI2S7vv3EjVQ68C0cjw9frBoUE2Hj0BvFp9h3u6Vbsg4lc1C8AtHdaN8orKuNKkLRLuYEL52R1J3v8olJGZRLnRdVKIivixmX/eQpzgeExtp20jI1HxRP1AAZ6xZoILdqDPO549LO4WeG+685JRUTdiwcY5fjZlqeMxuT4PpMn1X9OWsS7NRj06Wa5E3Tvg4twjWp39KPfOdRte6P1T4JU=", "agentid": 218 }';
    ret,sMsg=wxcpt.DecryptMsg( sReqData, sReqMsgSig, sReqTimeStamp, sReqNonce)
    if( ret!=0 ):
       print "ERR: DecryptMsg ret: " + str(ret)
