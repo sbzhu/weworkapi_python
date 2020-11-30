@@ -10,6 +10,7 @@ ruby ： https://github.com/mycolorway/wework  MyColorway(个人开发者)
 php : https://github.com/sbzhu/weworkapi_php  abelzhu@tencent.com(企业微信团队)  
 golang : https://github.com/sbzhu/weworkapi_golang  ryanjelin@tencent.com(企业微信团队)   
 golang : https://github.com/doubliekill/EnterpriseWechatSDK  1006401052yh@gmail.com(个人开发者)  
+nodejs: https://github.com/Shijf/nodejs-WXMsgCrypt shijf_private@163.com(个人开发者)
 
 # Director 
 
