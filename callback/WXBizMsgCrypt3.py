@@ -217,8 +217,8 @@ class WXBizMsgCrypt(object):
 
         # 验证URL
         # @param sMsgSignature: 签名串，对应URL参数的msg_signature
-        # @param sTimeStamp: 时间戳，对应URL参数的timestamp
-        # @param sNonce: 随机串，对应URL参数的nonce
+        # @param sTimeStamp: 时间戳，对应URL参数的timestamp,应为字符型
+        # @param sNonce: 随机串，对应URL参数的nonce，应为字符型
         # @param sEchoStr: 随机串，对应URL参数的echostr
         # @param sReplyEchoStr: 解密之后的echostr，当return返回0时有效
         # @return：成功0，失败返回对应的错误码
@@ -232,7 +232,7 @@ class WXBizMsgCrypt(object):
             return ierror.WXBizMsgCrypt_ValidateSignature_Error, None
         pc = Prpcrypt(self.key)
         ret, sReplyEchoStr = pc.decrypt(sEchoStr, self.m_sReceiveId)
-        return ret, sReplyEchoStr
+        return ret, int(sReplyEchoStr)
 
     def EncryptMsg(self, sReplyMsg, sNonce, timestamp=None):
         # 将企业回复用户的消息加密打包
