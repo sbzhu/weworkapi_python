@@ -17,10 +17,11 @@ from Crypto.Cipher import AES
 import sys
 import socket
 import json
+import importlib
 
-reload(sys)
+importlib.reload(sys)
 import ierror 
-sys.setdefaultencoding('utf-8') 
+# sys.setdefaultencoding('utf-8') 
 
 """
 关于Crypto.Cipher模块，ImportError: No module named 'Crypto'解决方案
@@ -49,10 +50,10 @@ class SHA1:
             sortlist = [token, timestamp, nonce, encrypt]
             sortlist.sort()
             sha = hashlib.sha1()
-            sha.update("".join(sortlist))
+            sha.update("".join(sortlist).encode())
             return  ierror.WXBizMsgCrypt_OK, sha.hexdigest()
-        except Exception,e:
-            print e
+        except Exception as e:
+            print(e)
             return  ierror.WXBizMsgCrypt_ComputeSignature_Error, None
   
 
@@ -75,8 +76,8 @@ class JsonParse:
         try:
             json_dict = json.loads(jsontext)
             return  ierror.WXBizMsgCrypt_OK, json_dict['encrypt']
-        except Exception,e: 
-            print e
+        except Exception as e: 
+            print(e)
             return ierror.WXBizMsgCrypt_ParseJson_Error, None
     def generate(self, encrypt, signature, timestamp, nonce):
         """生成json消息
@@ -152,8 +153,8 @@ class Prpcrypt(object):
             ciphertext = cryptor.encrypt(text)
             # 使用BASE64对加密后的字符串进行编码
             return ierror.WXBizMsgCrypt_OK, base64.b64encode(ciphertext)
-        except Exception,e:
-            print e 
+        except Exception as e:
+            print(e) 
             return  ierror.WXBizMsgCrypt_EncryptAES_Error,None
     
     def decrypt(self,text,receiveid):
@@ -165,11 +166,11 @@ class Prpcrypt(object):
             cryptor = AES.new(self.key,self.mode,self.key[:16])
             # 使用BASE64对密文进行解码，然后AES-CBC解密
             plain_text  = cryptor.decrypt(base64.b64decode(text))
-        except Exception,e:
-            print e 
+        except Exception as e:
+            print(e) 
             return  ierror.WXBizMsgCrypt_DecryptAES_Error,None
         try:
-            pad = ord(plain_text[-1]) 
+            pad = plain_text[-1] 
             # 去掉补位字符串 
             #pkcs7 = PKCS7Encoder()
             #plain_text = pkcs7.encode(plain_text)   
@@ -178,14 +179,13 @@ class Prpcrypt(object):
             json_len = socket.ntohl(struct.unpack("I",content[ : 4])[0])
             json_content = content[4 : json_len+4] 
             from_receiveid = content[json_len+4:]
-        except Exception,e:
-            print e
+        except Exception as e:
+            print(e)
             return  ierror.WXBizMsgCrypt_IllegalBuffer,None
-        if  from_receiveid != receiveid:
-            print "receiveid not match"
-            print from_receiveid 
+        if  from_receiveid.decode() != receiveid:
+            print("receiveid not match")
             return ierror.WXBizMsgCrypt_ValidateCorpid_Error,None
-        return 0,json_content
+        return 0,json_content.decode()
     
     def get_random_str(self):
         """ 随机生成16位字符串
@@ -265,8 +265,8 @@ class WXBizJsonMsgCrypt(object):
         if ret  != 0:
             return ret, None 
         if not signature == sMsgSignature:
-            print "signature not match"
-            print signature
+            print("signature not match")
+            print(signature)
             return ierror.WXBizMsgCrypt_ValidateSignature_Error, None
         pc = Prpcrypt(self.key)
         ret,json_content = pc.decrypt(encrypt,self.m_sReceiveId)
