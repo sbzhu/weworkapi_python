@@ -34,13 +34,13 @@ if __name__ == "__main__":
    sVerifyEchoStr="fsi1xnbH4yQh0+PJxcOdhhK6TDXkjMyhEPA7xB2TGz6b+g7xyAbEkRxN/3cNXW9qdqjnoVzEtpbhnFyq6SVHyA=="
    ret,sEchoStr=wxcpt.VerifyURL(sVerifyMsgSig, sVerifyTimeStamp,sVerifyNonce,sVerifyEchoStr)
    if(ret!=0):
-      print "ERR: VerifyURL ret: " + str(ret)
+      print("ERR: VerifyURL ret: " + str(ret))
       sys.exit(1)
    else:
-      print "done VerifyURL"
+      print("done VerifyURL")
       #验证URL成功，将sEchoStr返回给企业号
 
-   print "=============================="
+   print("==============================")
    '''
    ------------使用示例二：对用户回复的消息解密---------------
    用户回复消息或者点击事件响应时，企业会收到回调消息，此消息是经过企业微信加密之后的密文以post形式发送给企业，密文格式请参考官方文档
@@ -66,16 +66,16 @@ if __name__ == "__main__":
    sReqData = '{ "tousername": "wx5823bf96d3bd56c7", "encrypt": "cjhLUX7UU4yCSelv1vz7T0zT8huF51bAMVWriNvO1FMegHrQZNrtvRxbwf0fUPsFvwqR0U0fgiJNEA5Y30F2MoI2S7vv3EjVQ68C0cjw9frBoUE2Hj0BvFp9h3u6Vbsg4lc1C8AtHdaN8orKuNKkLRLuYEL52R1J3v8olJGZRLnRdVKIivixmX/eQpzgeExtp20jI1HxRP1AAZ6xZoILdqDPO549LO4WeG+685JRUTdiwcY5fjZlqeMxuT4PpMn1X9OWsS7NRj06Wa5E3Tvg4twjWp39KPfOdRte6P1T4JU=", "agentid": 218 }';
    ret,sMsg=wxcpt.DecryptMsg( sReqData, sReqMsgSig, sReqTimeStamp, sReqNonce)
    if( ret!=0 ):
-      print "ERR: DecryptMsg ret: " + str(ret)
+      print("ERR: DecryptMsg ret: " + str(ret))
       sys.exit(1)
    else:
-      print sMsg
+      print(sMsg)
    # 解密成功，sMsg即为json格式的明文
    # TODO: 对明文的处理
    # ...
    # ...
 
-   print "=============================="
+   print("==============================")
    
    '''
    ------------使用示例三：企业回复用户消息的加密---------------
@@ -100,9 +100,9 @@ if __name__ == "__main__":
    sRespData = '{ "ToUserName": "wx5823bf96d3bd56c7", "FromUserName": :mycreate", "CreateTime": 1409659813, "MsgType": "text", "Content": "hello", "MsgId": 4561255354251345929, "AgentID": 218}'
    ret,sEncryptMsg=wxcpt.EncryptMsg(sRespData, sReqNonce, sReqTimeStamp)
    if( ret!=0 ):
-      print "ERR: EncryptMsg ret: " + str(ret)
+      print("ERR: EncryptMsg ret: " + str(ret))
       sys.exit(1)
    else:
-      print sEncryptMsg
+      print(sEncryptMsg)
       #ret == 0 加密成功，企业需要将sEncryptMsg返回给企业号
-   print "=============================="
+   print("==============================")
