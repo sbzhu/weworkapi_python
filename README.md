@@ -12,13 +12,16 @@ golang : https://github.com/sbzhu/weworkapi_golang  ryanjelin@tencent.com(企业
 golang : https://github.com/doubliekill/EnterpriseWechatSDK  1006401052yh@gmail.com(个人开发者)  
 
 # Director 
-
 ├── api // API 接口  
 │   ├── examples // API接口的测试用例  
 │   ├── README.md  
 │   └── src // API接口的关键逻辑  
-├── conf.py  
-├── README.md  
+├── callback // 加解密库(python2, xml格式)
+├── callback_json // 加解密库(Python2, json格式, 仅适用于企业机器人/智能机器人)
+├── callback_json_python3 // 加解密库(Python3, json格式, 仅适用于企业机器人/智能机器人)
+├── callback_python3 // 加解密库(python2, xml格式)
+├── conf.py
+└── README.md
 
 # Usage
 将本项目下载到你的目录，既可直接引用相关文件  
