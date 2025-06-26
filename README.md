@@ -16,10 +16,10 @@ golang : https://github.com/doubliekill/EnterpriseWechatSDK  1006401052yh@gmail.
 │   ├── examples // API接口的测试用例  
 │   ├── README.md  
 │   └── src // API接口的关键逻辑  
-├── callback // 加解密库(python2, xml格式) 
-├── callback_json // 加解密库(Python2, json格式, 仅适用于企业机器人/智能机器人) 
-├── callback_json_python3 // 加解密库(Python3, json格式, 仅适用于企业机器人/智能机器人) 
-├── callback_python3 // 加解密库(python2, xml格式) 
+├── callback // 加解密库,python2, xml格式)
+├── callback_json // 加解密库,Python2, json格式, 仅适用于企业机器人/智能机器人
+├── callback_json_python3 // 加解密库,Python3, json格式, 仅适用于企业机器人/智能机器人
+├── callback_python3 // 加解密库,python2, xml格式
 ├── conf.py
 └── README.md
 
