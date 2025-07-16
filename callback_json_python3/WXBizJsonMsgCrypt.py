@@ -141,33 +141,29 @@ class Prpcrypt(object):
         # 设置加解密模式为AES的CBC模式   
         self.mode = AES.MODE_CBC
     
-            
-    def encrypt(self,text,receiveid):
+
+    def encrypt(self, text, receiveid):
         """对明文进行加密
         @param text: 需要加密的明文
         @return: 加密得到的字符串
-        """      
-        # 将text和receiveid转换为bytes类型
-        text = text.encode('utf-8')
-        receiveid = receiveid.encode('utf-8')
-        
+        """
         # 16位随机字符串添加到明文开头
-        random_str = self.get_random_str().encode('utf-8')
-        text = random_str + struct.pack("I",socket.htonl(len(text))) + text + receiveid
-        
+        text = text.encode()
+        text = self.get_random_str() + struct.pack("I", socket.htonl(len(text))) + text + receiveid.encode()
+
         # 使用自定义的填充方式对明文进行补位填充
         pkcs7 = PKCS7Encoder()
         text = pkcs7.encode(text)
-        
-        # 加密    
-        cryptor = AES.new(self.key,self.mode,self.key[:16])
+        # 加密
+        cryptor = AES.new(self.key, self.mode, self.key[:16])
         try:
             ciphertext = cryptor.encrypt(text)
             # 使用BASE64对加密后的字符串进行编码
             return ierror.WXBizMsgCrypt_OK, base64.b64encode(ciphertext)
         except Exception as e:
-            print(e)
-            return ierror.WXBizMsgCrypt_EncryptAES_Error,None
+            logger = logging.getLogger()
+            logger.error(e)
+            return ierror.WXBizMsgCrypt_EncryptAES_Error, None
     
     def decrypt(self,text,receiveid):
         """对解密后的明文进行补位删除
@@ -202,10 +198,8 @@ class Prpcrypt(object):
     def get_random_str(self):
         """ 随机生成16位字符串
         @return: 16位字符串
-        """ 
-        rule = string.ascii_letters + string.digits
-        str = random.sample(rule, 16)
-        return "".join(str)
+        """
+        return str(random.randint(1000000000000000, 9999999999999999)).encode()
         
 class WXBizJsonMsgCrypt(object):
     #构造函数
@@ -247,6 +241,7 @@ class WXBizJsonMsgCrypt(object):
         #return：成功0，sEncryptMsg,失败返回对应的错误码None     
         pc = Prpcrypt(self.key) 
         ret,encrypt = pc.encrypt(sReplyMsg, self.m_sReceiveId)
+        encrypt = encrypt.decode('utf-8')
         if ret != 0:
             return ret,None
         if timestamp is None:
