@@ -8,6 +8,7 @@
 #########################################################################
 from WXBizJsonMsgCrypt import WXBizJsonMsgCrypt
 import sys
+import json
 
 if __name__ == "__main__":   
    #假设企业在企业微信后台上设置的参数如下
@@ -106,3 +107,17 @@ if __name__ == "__main__":
       print(sEncryptMsg)
       #ret == 0 加密成功，企业需要将sEncryptMsg返回给企业号
    print("==============================")
+
+   '''
+    对上面加密的包进行解密
+    '''
+   sReqMsgSig = json.loads(sEncryptMsg)['msgsignature']
+   sReqTimeStamp = json.loads(sEncryptMsg)['timestamp']
+   sReqNonce = json.loads(sEncryptMsg)['nonce']
+
+   ret,sMsg=wxcpt.DecryptMsg( sEncryptMsg, sReqMsgSig, sReqTimeStamp, sReqNonce)
+   if( ret!=0 ):
+      print("ERR: DecryptMsg ret: " + str(ret))
+      sys.exit(1)
+   else:
+      print(sMsg)
