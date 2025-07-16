@@ -105,4 +105,4 @@ if __name__ == "__main__":
       sys.exit(1)
    #ret == 0 加密成功，企业需要将sEncryptMsg返回给企业号
    #TODO:
-   #HttpUitls.SetResponse(sEncryptMsg)
+   #HttpUitls.SetResponse(sEncryptMsg) #测试解密
