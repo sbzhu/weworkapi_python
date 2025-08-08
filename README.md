@@ -38,7 +38,7 @@ token是需要缓存的，不能每次调用都去获取token，[否则会中频
 在类的生命周期里，这个accessToken都是存在的， 当且仅当发现token过期，CorpAPI类会自动刷新token   
 刷新机制在 api/src/AbstractApi.py  
 所以，使用时，只需要全局实例化一个CorpAPI类，不要析构它，就可一直用它调函数，不用关心 token  
-```
+```python
 api = CorpAPI(corpid, corpsecret);
 api.dosomething()
 api.dosomething()
